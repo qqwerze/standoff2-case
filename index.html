@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Standoff 2 - Case Simulator</title>
+    <!-- PWA: установка на телефон/ПК -->
+    <meta name="theme-color" content="#1f1251">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Кейсы SO2">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/favicon-32.png" type="image/png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Верхняя панель навигации -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <div class="avatar-circle" id="avatarBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                </svg>
+            </div>
+            <span class="player-name">Player</span>
+        </div>
+        <div class="top-bar-center">
+            <div class="currency-display" id="goldDisplay">
+                <div class="currency-icon gold-icon">★</div>
+                <span class="currency-amount" id="goldAmount">10 000</span>
+                <button class="currency-add-btn" id="addGoldBtn">+</button>
+            </div>
+            <div class="currency-display" id="silverDisplay">
+                <div class="currency-icon silver-icon">◆</div>
+                <span class="currency-amount" id="silverAmount">0</span>
+                <button class="currency-add-btn" id="addSilverBtn">+</button>
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <button class="nav-btn" data-tab="inventory" id="navInventory">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 2c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 14H6v-1c0-2 4-3.1 6-3.1S18 15 18 17v1z"/>
+                </svg>
+                <span>Инвентарь</span>
+            </button>
+            <button class="nav-btn active" data-tab="cases" id="navCases">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 4h4v3h-4V4z"/>
+                </svg>
+                <span>Кейсы</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <!-- ====== ВКЛАДКА КЕЙСОВ ====== -->
+        <section class="tab-panel active" id="casesPanel">
+            <div class="section-header">
+                <h2>Магазин кейсов</h2>
+                <p class="subtitle">Открывай кейсы и получайskins для оружия</p>
+            </div>
+            <div class="cases-grid" id="casesGrid">
+                <!-- Заполняется через JS -->
+            </div>
+        </section>
+
+        <!-- ====== ВКЛАДКА ИНВЕНТАРЯ ====== -->
+        <section class="tab-panel" id="inventoryPanel">
+            <div class="section-header">
+                <h2>Мой инвентарь</h2>
+                <div class="inventory-controls">
+                    <button class="filter-btn active" data-rarity="all">Все</button>
+                    <button class="filter-btn" data-rarity="common">Обычные</button>
+                    <button class="filter-btn" data-rarity="uncommon">Необычные</button>
+                    <button class="filter-btn" data-rarity="rare">Редкие</button>
+                    <button class="filter-btn" data-rarity="epic">Эпические</button>
+                    <button class="filter-btn" data-rarity="legendary">Легендарные</button>
+                    <button class="filter-btn" data-rarity="arcane">Таинственные</button>
+                </div>
+                <div class="inventory-stats">
+                    <span id="inventoryCount">Предметов: 0</span>
+                    <span id="inventoryValue">Стоимость: 0 ★</span>
+                </div>
+            </div>
+            <div class="inventory-grid" id="inventoryGrid">
+                <!-- Заполняется через JS -->
+            </div>
+            <div class="empty-inventory" id="emptyInventory">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="#555">
+                    <path d="M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 4h4v3h-4V4z"/>
+                </svg>
+                <p>Инвентарь пуст</p>
+                <span>Откройте кейс, чтобы получить предметы</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- ====== ПРОСМОТР КЕЙСА ====== -->
+    <div class="case-view-overlay" id="caseViewOverlay">
+        <div class="case-view">
+            <button class="close-btn" id="closeCaseView">✕</button>
+            <div class="case-view-header">
+                <div class="case-preview-large" id="casePreviewLarge"></div>
+                <h2 id="caseViewName">Название кейса</h2>
+                <p class="case-price-tag">Цена: <span id="caseViewPrice">0</span> ★</p>
+            </div>
+            <div class="case-items-preview" id="caseItemsPreview">
+                <!-- Предметы кейса -->
+            </div>
+            <button class="open-case-btn" id="openCaseBtn">
+                <span class="btn-text">Открыть кейс</span>
+                <span class="btn-price"><span id="openCasePrice">0</span> ★</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ====== РУЛЕТКА ====== -->
+    <div class="roulette-overlay" id="rouletteOverlay">
+        <div class="roulette-container">
+            <div class="roulette-pointer"></div>
+            <div class="roulette-strip-wrapper">
+                <div class="roulette-strip" id="rouletteStrip">
+                    <!-- Элементы рулетки -->
+                </div>
+            </div>
+        </div>
+        <div class="roulette-case-name" id="rouletteCaseName"></div>
+    </div>
+
+    <!-- ====== МОДАЛЬНОЕ ОКНО РЕЗУЛЬТАТА ====== -->
+    <div class="result-overlay" id="resultOverlay">
+        <div class="result-modal">
+            <h2 class="result-title">Вы получили!</h2>
+            <div class="result-item" id="resultItem">
+                <div class="result-item-image" id="resultItemImage"></div>
+                <h3 class="result-item-name" id="resultItemName"></h3>
+                <span class="result-item-rarity" id="resultItemRarity"></span>
+            </div>
+            <div class="result-actions">
+                <button class="result-btn collect-btn" id="collectBtn">Забрать</button>
+                <button class="result-btn sell-btn" id="sellBtn">
+                    Продать за <span id="sellPrice">0</span> ★
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== МОДАЛЬНОЕ ОКНО ПРОДАЖИ ====== -->
+    <div class="sell-overlay" id="sellOverlay">
+        <div class="sell-modal">
+            <h2>Продать предмет</h2>
+            <div class="sell-item-preview" id="sellItemPreview"></div>
+            <p id="sellItemName"></p>
+            <p class="sell-price-text">Цена продажи: <span id="sellConfirmPrice">0</span> ★</p>
+            <button class="result-btn equip-btn" id="equipBtn">Надеть</button>
+            <div class="sell-actions">
+                <button class="result-btn collect-btn" id="cancelSellBtn">Отмена</button>
+                <button class="result-btn sell-btn" id="confirmSellBtn">Продать</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== ДОБАВЛЕНИЕ ЗОЛОТА ====== -->
+    <div class="gold-add-overlay" id="goldAddOverlay">
+        <div class="gold-add-modal">
+            <h2>Пополнение баланса</h2>
+            <div class="gold-options">
+                <button class="gold-option" data-amount="1000">
+                    <div class="gold-option-icon">★</div>
+                    <span class="gold-option-amount">1 000</span>
+                    <span class="gold-option-label">Базовый</span>
+                </button>
+                <button class="gold-option" data-amount="5000">
+                    <div class="gold-option-icon">★</div>
+                    <span class="gold-option-amount">5 000</span>
+                    <span class="gold-option-label">Стандарт</span>
+                </button>
+                <button class="gold-option" data-amount="10000">
+                    <div class="gold-option-icon">★</div>
+                    <span class="gold-option-amount">10 000</span>
+                    <span class="gold-option-label">Премиум</span>
+                </button>
+                <button class="gold-option" data-amount="50000">
+                    <div class="gold-option-icon">★</div>
+                    <span class="gold-option-amount">50 000</span>
+                    <span class="gold-option-label">VIP</span>
+                </button>
+            </div>
+            <button class="result-btn collect-btn" id="closeGoldAdd">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- ====== БАННЕР УСТАНОВКИ ПРИЛОЖЕНИЯ ====== -->
+    <div class="install-banner" id="installBanner">
+        <div class="install-banner-icon">
+            <img src="icons/icon-192.png" alt="Standoff 2 Case" width="40" height="40">
+        </div>
+        <div class="install-banner-text">
+            <strong>Установить Standoff 2 Case</strong>
+            <span>Быстрый доступ с телефона и ПК</span>
+        </div>
+        <button class="install-banner-btn" id="installBtn">Установить</button>
+        <button class="install-banner-close" id="installClose">✕</button>
+    </div>
+
+    <!-- ====== ЧАТ ====== -->
+    <button class="chat-fab" id="chatFab" title="Чат">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
+        </svg>
+        <span class="chat-fab-badge" id="chatBadge" hidden>1</span>
+    </button>
+
+    <div class="chat-overlay" id="chatOverlay">
+        <div class="chat-panel">
+            <div class="chat-header">
+                <h3>Канал \ Чат</h3>
+                <button class="close-btn" id="closeChat">✕</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Сообщения -->
+            </div>
+            <div class="chat-status" id="chatStatus"></div>
+            <div class="chat-input-row">
+                <input type="text" class="chat-input" id="chatInput"
+                       placeholder="Сообщение..." maxlength="200" autocomplete="off">
+                <button class="chat-send" id="chatSend">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (compat) для онлайн-чата -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Регистрация Service Worker (офлайн-режим)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('./sw.js').catch(function () {});
+            });
+        }
+    </script>
+</body>
+</html>

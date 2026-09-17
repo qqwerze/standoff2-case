@@ -1,0 +1,32 @@
+{
+  "name": "Standoff 2 — Case Simulator",
+  "short_name": "Кейсы SO2",
+  "description": "Симулятор кейсов Standoff 2: крути рулетку, собирай скины, продавай за золото и общайся в чате.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#060509",
+  "theme_color": "#1f1251",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
